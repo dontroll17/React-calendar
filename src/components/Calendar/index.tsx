@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './index.css';
+import { getMonthData } from './handlers';
 
 function Calendar() {
 
@@ -8,30 +9,31 @@ function Calendar() {
         day: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     }
 
-    const data = [
-        [undefined, undefined, undefined, undefined, undefined, undefined, new Date()],
-        [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-        [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-        [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-        [new Date(), new Date(), undefined, undefined, undefined, undefined, undefined]
-    ]
-
-    const [ month, setMonth ] = useState(props.month[0]);
+    const [ monthState, setMonth ] = useState(props.month[0]);
     const [ dateState, setDate ] = useState(new Date());
 
+    let year = dateState.getFullYear();
+    let month = dateState.getMonth();
+    const daysInMonth = getMonthData(year, month)
+
     const handlePrevButtonClick = () => {
-        const date = new Date(dateState.getFullYear(), dateState.getMonth() - 1);
+        const date = new Date(year, month - 1);
         setDate(date);
     }
 
     const handleNextButtonClick = () => {
-        const date = new Date(dateState.getFullYear(), dateState.getMonth() + 1);
+        const date = new Date(year, month + 1);
         setDate(date);
     }
 
-    // const handleSelectChange = () => {}
+    const handleSelectChange = () => {
+        const date = dateState;
 
-    const handleDayClick = (date: any) => {
+        setDate(date);
+        console.log(dateState)
+    }
+
+    const handleDayClick = (date: Date) => {
         console.log(date)
     }
 
@@ -40,14 +42,17 @@ function Calendar() {
             <header>
                 <button onClick={() => handlePrevButtonClick()}>{'<'}</button>
 
-                <select>
-                    {props.month.map((name, idx) => 
+                <select
+                    onClick={() => handleSelectChange()}
+                >
+                    {/* {props.month.map((name, idx) => 
                         <option key={name} value={idx}>{name}</option>
-                    )}
+                    )} */}
+                    <option value="month">{props.month[month]}</option>
                 </select>
 
                 <select>
-                    <option value="year">{dateState.getFullYear()}</option>
+                    <option value="year">{year}</option>
                 </select>
                 
                 <button onClick={() => handleNextButtonClick()}>{'>'}</button>
@@ -63,9 +68,9 @@ function Calendar() {
                 </thead>
 
                 <tbody>
-                    {data.map((week, idx) =>
+                    {daysInMonth.map((week, idx) =>
                         <tr className="week" key={idx}>
-                            {week.map((date, idx) => date ?
+                            {week.map((date: any, idx: any) => date ?
                                 <td 
                                     className='day' 
                                     key={idx}

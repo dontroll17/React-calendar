@@ -14,8 +14,8 @@ body {
 button, select {
   height: 2em;
   font-size: 1rem;
-  background-color: #fff;
-  color: #363636;
+  background-color: #dee12f;
+  color: #191a18;
   bottom: 1px solid #dbdbdb;
   border-radius: 4px;
   cursor: pointer;
