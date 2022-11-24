@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './index.css';
 
 function Calendar() {
@@ -16,10 +16,29 @@ function Calendar() {
         [new Date(), new Date(), undefined, undefined, undefined, undefined, undefined]
     ]
 
+    const [ month, setMonth ] = useState(props.month[0]);
+    const [ dateState, setDate ] = useState(new Date());
+
+    const handlePrevButtonClick = () => {
+        const date = new Date(dateState.getFullYear(), dateState.getMonth() - 1);
+        setDate(date);
+    }
+
+    const handleNextButtonClick = () => {
+        const date = new Date(dateState.getFullYear(), dateState.getMonth() + 1);
+        setDate(date);
+    }
+
+    // const handleSelectChange = () => {}
+
+    const handleDayClick = (date: any) => {
+        console.log(date)
+    }
+
     return (
         <div className="calendar">
             <header>
-                <button>{'<'}</button>
+                <button onClick={() => handlePrevButtonClick()}>{'<'}</button>
 
                 <select>
                     {props.month.map((name, idx) => 
@@ -28,10 +47,10 @@ function Calendar() {
                 </select>
 
                 <select>
-                    <option value="2023">2023</option>
+                    <option value="year">{dateState.getFullYear()}</option>
                 </select>
                 
-                <button>{'>'}</button>
+                <button onClick={() => handleNextButtonClick()}>{'>'}</button>
             </header>
 
             <table>
@@ -47,7 +66,13 @@ function Calendar() {
                     {data.map((week, idx) =>
                         <tr className="week" key={idx}>
                             {week.map((date, idx) => date ?
-                                <td className='day'>{date.getDate()}</td>
+                                <td 
+                                    className='day' 
+                                    key={idx}
+                                    onClick={() => handleDayClick(date)}
+                                    >
+                                        {date.getDate()}
+                                </td>
                                 :
                                 <td key={idx}></td>
                             )}

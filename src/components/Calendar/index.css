@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(110, 247, 110);
+}
+
 .calendar header {
     display: flex;
     justify-content: center;
@@ -30,7 +34,7 @@
 }
 
 .calendar .day:hover {
-    background-color: #eaeaea;
+    background-color: #1bdf56;
     cursor: pointer;
 }
 
